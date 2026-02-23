@@ -3,7 +3,7 @@
     "displayName": "Odoo 19 Snippets",
     "description": "Professional code snippets for Odoo 19 development. Covers Python models, XML views, security, actions, menus, cron jobs, email templates and more.",
     "version": "1.0.0",
-    "publisher": "26f93159-0994-6e24-9a66-ff730afd9866",
+    "publisher": "Odoo19Snippet",
     "author": {
         "name": "Subha Sundar Das"
     },
