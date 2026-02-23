@@ -1,0 +1,389 @@
+{
+    // ╔══════════════════════════════════════════════════════════════════════╗
+    // ║  Odoo 19 Snippets — Python                                          ║
+    // ║  https://github.com/YOUR-USERNAME/odoo19-snippets                   ║
+    // ╚══════════════════════════════════════════════════════════════════════╝
+
+    // ════════════════════════════════════════════════════════════════════════
+    // MODEL DEFINITIONS
+    // ════════════════════════════════════════════════════════════════════════
+
+    "Odoo 19 — Base Model": {
+        "prefix": "omodel",
+        "body": [
+            "# -*- coding: utf-8 -*-",
+            "from odoo import models, fields, api, _",
+            "from odoo.exceptions import UserError, ValidationError",
+            "",
+            "",
+            "class ${1:ModelName}(models.Model):",
+            "    _name = '${2:module.model}'",
+            "    _description = '${3:Model Description}'",
+            "    _inherit = ['mail.thread', 'mail.activity.mixin']",
+            "    _order = '${4:id desc}'",
+            "    _rec_name = 'name'",
+            "",
+            "    name = fields.Char(string='Name', required=True, tracking=True)",
+            "    active = fields.Boolean(default=True)",
+            "    state = fields.Selection([",
+            "        ('draft', 'Draft'),",
+            "        ('confirmed', 'Confirmed'),",
+            "        ('done', 'Done'),",
+            "        ('cancelled', 'Cancelled'),",
+            "    ], string='Status', default='draft', tracking=True)",
+            "    notes = fields.Text(string='Notes')",
+            "    company_id = fields.Many2one(",
+            "        'res.company', string='Company',",
+            "        default=lambda self: self.env.company",
+            "    )",
+            "    $0"
+        ],
+        "description": "Odoo 19 — Complete base model with mail thread"
+    },
+
+    "Odoo 19 — Inherit Model": {
+        "prefix": "oinherit",
+        "body": [
+            "# -*- coding: utf-8 -*-",
+            "from odoo import models, fields, api",
+            "",
+            "",
+            "class ${1:ModelName}(models.Model):",
+            "    _inherit = '${2:existing.model}'",
+            "",
+            "    ${3:field_name} = fields.${4:Char}(string='${5:Field Label}')",
+            "    $0"
+        ],
+        "description": "Odoo 19 — Inherit and extend existing model"
+    },
+
+    "Odoo 19 — Transient Model (Wizard)": {
+        "prefix": "owizard",
+        "body": [
+            "# -*- coding: utf-8 -*-",
+            "from odoo import models, fields, api, _",
+            "from odoo.exceptions import UserError",
+            "",
+            "",
+            "class ${1:WizardName}(models.TransientModel):",
+            "    _name = '${2:module.wizard}'",
+            "    _description = '${3:Wizard Description}'",
+            "",
+            "    ${4:field_name} = fields.${5:Char}(string='${6:Label}', required=True)",
+            "",
+            "    def action_confirm(self):",
+            "        self.ensure_one()",
+            "        $0",
+            "        return {'type': 'ir.actions.act_window_close'}",
+            "",
+            "    def action_cancel(self):",
+            "        return {'type': 'ir.actions.act_window_close'}"
+        ],
+        "description": "Odoo 19 — Transient wizard model"
+    },
+
+    "Odoo 19 — SQL View Model": {
+        "prefix": "osqlview",
+        "body": [
+            "# -*- coding: utf-8 -*-",
+            "from odoo import models, fields",
+            "",
+            "",
+            "class ${1:ModelName}(models.Model):",
+            "    _name = '${2:module.report}'",
+            "    _description = '${3:Report Description}'",
+            "    _auto = False",
+            "    _order = '${4:id}'",
+            "",
+            "    ${5:field_name} = fields.${6:Char}(string='${7:Label}', readonly=True)",
+            "",
+            "    def init(self):",
+            "        self.env.cr.execute(\"\"\"",
+            "            CREATE OR REPLACE VIEW ${2:module_report} AS",
+            "            SELECT",
+            "                ROW_NUMBER() OVER () AS id,",
+            "                $0",
+            "            FROM ${8:source_table}",
+            "        \"\"\")"
+        ],
+        "description": "Odoo 19 — SQL View (non-stored report model)"
+    },
+
+    // ════════════════════════════════════════════════════════════════════════
+    // FIELDS
+    // ════════════════════════════════════════════════════════════════════════
+
+    "Odoo 19 — Many2one Field": {
+        "prefix": "om2o",
+        "body": [
+            "${1:field_name} = fields.Many2one(",
+            "    '${2:model.name}', string='${3:Label}',",
+            "    ${4:required=True, }ondelete='${5|cascade,restrict,set null|}'",
+            ")"
+        ],
+        "description": "Odoo 19 — Many2one field"
+    },
+
+    "Odoo 19 — One2many Field": {
+        "prefix": "oo2m",
+        "body": [
+            "${1:field_name}_ids = fields.One2many(",
+            "    '${2:model.name}', '${3:inverse_field}', string='${4:Label}'",
+            ")"
+        ],
+        "description": "Odoo 19 — One2many field"
+    },
+
+    "Odoo 19 — Many2many Field": {
+        "prefix": "om2m",
+        "body": [
+            "${1:field_name}_ids = fields.Many2many(",
+            "    '${2:model.name}', string='${3:Label}'",
+            ")"
+        ],
+        "description": "Odoo 19 — Many2many field"
+    },
+
+    "Odoo 19 — Selection Field": {
+        "prefix": "oselection",
+        "body": [
+            "${1:field_name} = fields.Selection([",
+            "    ('${2:key1}', '${3:Label 1}'),",
+            "    ('${4:key2}', '${5:Label 2}'),",
+            "    ('${6:key3}', '${7:Label 3}'),",
+            "], string='${8:Label}', default='${2:key1}', required=True, tracking=True)"
+        ],
+        "description": "Odoo 19 — Selection field"
+    },
+
+    "Odoo 19 — Compute Field": {
+        "prefix": "ocompute",
+        "body": [
+            "${1:field_name} = fields.${2:Float}(",
+            "    string='${3:Label}',",
+            "    compute='_compute_${1}',",
+            "    store=True",
+            ")",
+            "",
+            "@api.depends('${4:dependency}')",
+            "def _compute_${1}(self):",
+            "    for rec in self:",
+            "        rec.${1} = $0"
+        ],
+        "description": "Odoo 19 — Computed field with depends"
+    },
+
+    "Odoo 19 — Related Field": {
+        "prefix": "orelated",
+        "body": [
+            "${1:field_name} = fields.${2:Char}(",
+            "    string='${3:Label}',",
+            "    related='${4:relation.field}',",
+            "    store=True",
+            ")"
+        ],
+        "description": "Odoo 19 — Related field"
+    },
+
+    "Odoo 19 — Monetary Field": {
+        "prefix": "omonetary",
+        "body": [
+            "${1:amount} = fields.Monetary(",
+            "    string='${2:Amount}',",
+            "    currency_field='currency_id'",
+            ")",
+            "currency_id = fields.Many2one(",
+            "    'res.currency',",
+            "    related='company_id.currency_id',",
+            "    store=True",
+            ")"
+        ],
+        "description": "Odoo 19 — Monetary field with currency"
+    },
+
+    // ════════════════════════════════════════════════════════════════════════
+    // METHODS
+    // ════════════════════════════════════════════════════════════════════════
+
+    "Odoo 19 — Create Multi with Sequence": {
+        "prefix": "ocreate",
+        "body": [
+            "@api.model_create_multi",
+            "def create(self, vals_list):",
+            "    for vals in vals_list:",
+            "        if vals.get('name', _('New')) == _('New'):",
+            "            vals['name'] = (",
+            "                self.env['ir.sequence'].next_by_code('${1:sequence.code}')",
+            "                or _('New')",
+            "            )",
+            "    return super().create(vals_list)"
+        ],
+        "description": "Odoo 19 — create_multi with auto sequence"
+    },
+
+    "Odoo 19 — Override Write": {
+        "prefix": "owrite",
+        "body": [
+            "def write(self, vals):",
+            "    $0",
+            "    return super().write(vals)"
+        ],
+        "description": "Odoo 19 — Override write method"
+    },
+
+    "Odoo 19 — Override Unlink": {
+        "prefix": "ounlink",
+        "body": [
+            "def unlink(self):",
+            "    for rec in self:",
+            "        if rec.state not in ('${1:draft}', '${2:cancelled}'):",
+            "            raise UserError(_(",
+            "                'You cannot delete a record in %s state.'",
+            "            ) % rec.state)",
+            "    return super().unlink()"
+        ],
+        "description": "Odoo 19 — Override unlink with state check"
+    },
+
+    "Odoo 19 — Override Copy": {
+        "prefix": "ocopy",
+        "body": [
+            "def copy(self, default=None):",
+            "    default = dict(default or {})",
+            "    default.update({",
+            "        'name': _('%s (Copy)') % self.name,",
+            "        'state': 'draft',",
+            "    })",
+            "    return super().copy(default)"
+        ],
+        "description": "Odoo 19 — Override copy/duplicate"
+    },
+
+    "Odoo 19 — Override default_get": {
+        "prefix": "odefaultget",
+        "body": [
+            "@api.model",
+            "def default_get(self, fields_list):",
+            "    defaults = super().default_get(fields_list)",
+            "    $0",
+            "    return defaults"
+        ],
+        "description": "Odoo 19 — Override default_get"
+    },
+
+    "Odoo 19 — Custom Display Name": {
+        "prefix": "odisplayname",
+        "body": [
+            "def _compute_display_name(self):",
+            "    for rec in self:",
+            "        rec.display_name = '[%s] %s' % (rec.${1:code}, rec.${2:name})"
+        ],
+        "description": "Odoo 19 — Custom display name"
+    },
+
+    "Odoo 19 — Onchange": {
+        "prefix": "oonchange",
+        "body": [
+            "@api.onchange('${1:field_name}')",
+            "def _onchange_${1}(self):",
+            "    if self.${1}:",
+            "        $0"
+        ],
+        "description": "Odoo 19 — Onchange method"
+    },
+
+    "Odoo 19 — Constrains": {
+        "prefix": "oconstrains",
+        "body": [
+            "@api.constrains('${1:field_name}')",
+            "def _check_${1}(self):",
+            "    for rec in self:",
+            "        if ${2:condition}:",
+            "            raise ValidationError(_('${3:Error message}'))"
+        ],
+        "description": "Odoo 19 — Field constraint validation"
+    },
+
+    "Odoo 19 — Action Button": {
+        "prefix": "oactionbtn",
+        "body": [
+            "def action_${1:name}(self):",
+            "    for rec in self:",
+            "        if rec.state != '${2:expected_state}':",
+            "            raise UserError(_('${3:Error message}'))",
+            "        rec.state = '${4:new_state}'",
+            "        $0"
+        ],
+        "description": "Odoo 19 — State transition action button"
+    },
+
+    "Odoo 19 — Return Window Action": {
+        "prefix": "oreturnaction",
+        "body": [
+            "return {",
+            "    'type': 'ir.actions.act_window',",
+            "    'name': _('${1:Title}'),",
+            "    'res_model': '${2:model.name}',",
+            "    'view_mode': 'list,form',",
+            "    'domain': [('${3:field}', '=', self.id)],",
+            "    'context': {'default_${3:field}': self.id},",
+            "    'target': '${4|current,new,fullscreen|}',",
+            "}"
+        ],
+        "description": "Odoo 19 — Return window action from button"
+    },
+
+    "Odoo 19 — Send Email Template": {
+        "prefix": "oemail",
+        "body": [
+            "template = self.env.ref('${1:module}.${2:template_id}')",
+            "template.send_mail(self.id, force_send=True)"
+        ],
+        "description": "Odoo 19 — Send email via template"
+    },
+
+    "Odoo 19 — Scheduled Action Method": {
+        "prefix": "ocronmethod",
+        "body": [
+            "@api.model",
+            "def _cron_${1:method_name}(self):",
+            "    \"\"\"Scheduled action: ${2:Description}.\"\"\"",
+            "    _logger = __import__('logging').getLogger(__name__)",
+            "    _logger.info('Running cron: ${1:method_name}')",
+            "    records = self.search([${3:('state', '=', 'active')}])",
+            "    for rec in records:",
+            "        try:",
+            "            $0",
+            "        except Exception as e:",
+            "            _logger.error('Cron error on %s: %s', rec.id, str(e))"
+        ],
+        "description": "Odoo 19 — Cron scheduled action method"
+    },
+
+    "Odoo 19 — Logger": {
+        "prefix": "olog",
+        "body": [
+            "import logging",
+            "_logger = logging.getLogger(__name__)",
+            "",
+            "_logger.info('${1:message}')"
+        ],
+        "description": "Odoo 19 — Logger setup and usage"
+    },
+
+    "Odoo 19 — UserError": {
+        "prefix": "oerror",
+        "body": [
+            "raise UserError(_('${1:Error message}'))"
+        ],
+        "description": "Odoo 19 — Raise UserError"
+    },
+
+    "Odoo 19 — ValidationError": {
+        "prefix": "ovalerror",
+        "body": [
+            "raise ValidationError(_('${1:Validation message}'))"
+        ],
+        "description": "Odoo 19 — Raise ValidationError"
+    }
+}

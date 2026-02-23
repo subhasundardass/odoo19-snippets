@@ -1,0 +1,65 @@
+{
+    // ╔══════════════════════════════════════════════════════════════════════╗
+    // ║  Odoo 19 Snippets — CSV (ir.model.access)                           ║
+    // ║  https://github.com/YOUR-USERNAME/odoo19-snippets                   ║
+    // ╚══════════════════════════════════════════════════════════════════════╝
+
+    "Odoo 19 — CSV Header": {
+        "prefix": "ocsv",
+        "body": [
+            "id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink"
+        ],
+        "description": "Odoo 19 — ir.model.access.csv header row"
+    },
+
+    "Odoo 19 — Access Row (User)": {
+        "prefix": "oaccessuser",
+        "body": [
+            "access_${1:model}_user,${2:model.name} user,model_${3:model_name},${4:module}.group_${4:module}_user,1,1,1,0"
+        ],
+        "description": "Odoo 19 — Access row for user group (no delete)"
+    },
+
+    "Odoo 19 — Access Row (Manager)": {
+        "prefix": "oaccessmanager",
+        "body": [
+            "access_${1:model}_manager,${2:model.name} manager,model_${3:model_name},${4:module}.group_${4:module}_manager,1,1,1,0"
+        ],
+        "description": "Odoo 19 — Access row for manager group"
+    },
+
+    "Odoo 19 — Access Row (Admin)": {
+        "prefix": "oaccessadmin",
+        "body": [
+            "access_${1:model}_admin,${2:model.name} admin,model_${3:model_name},${4:module}.group_${4:module}_admin,1,1,1,1"
+        ],
+        "description": "Odoo 19 — Access row for admin group (full access)"
+    },
+
+    "Odoo 19 — Access Row (Read Only)": {
+        "prefix": "oaccessreadonly",
+        "body": [
+            "access_${1:model}_readonly,${2:model.name} readonly,model_${3:model_name},${4:module}.group_${4:module}_user,1,0,0,0"
+        ],
+        "description": "Odoo 19 — Access row read only"
+    },
+
+    "Odoo 19 — Access Full Block (User + Admin)": {
+        "prefix": "oaccessfull",
+        "body": [
+            "access_${1:model}_user,${2:model.name} user,model_${3:model_name},${4:module}.group_${4:module}_user,1,1,1,0",
+            "access_${1:model}_admin,${2:model.name} admin,model_${3:model_name},${4:module}.group_${4:module}_admin,1,1,1,1"
+        ],
+        "description": "Odoo 19 — Full access block: user + admin rows"
+    },
+
+    "Odoo 19 — Access Full Block (User + Manager + Admin)": {
+        "prefix": "oaccessall",
+        "body": [
+            "access_${1:model}_user,${2:model.name} user,model_${3:model_name},${4:module}.group_${4:module}_user,1,1,1,0",
+            "access_${1:model}_manager,${2:model.name} manager,model_${3:model_name},${4:module}.group_${4:module}_manager,1,1,1,0",
+            "access_${1:model}_admin,${2:model.name} admin,model_${3:model_name},${4:module}.group_${4:module}_admin,1,1,1,1"
+        ],
+        "description": "Odoo 19 — Full access block: user + manager + admin rows"
+    }
+}

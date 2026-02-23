@@ -1,0 +1,64 @@
+{
+    "name": "odoo19-snippets",
+    "displayName": "Odoo 19 Snippets",
+    "description": "Professional code snippets for Odoo 19 development. Covers Python models, XML views, security, actions, menus, cron jobs, email templates and more.",
+    "version": "1.0.0",
+    "publisher": "26f93159-0994-6e24-9a66-ff730afd9866",
+    "author": {
+        "name": "Subha Sundar Das"
+    },
+    "icon": "images/icon.png",
+    "galleryBanner": {
+        "color": "#714B67",
+        "theme": "dark"
+    },
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Snippets",
+        "Programming Languages"
+    ],
+    "keywords": [
+        "odoo",
+        "odoo19",
+        "snippets",
+        "python",
+        "xml",
+        "erp",
+        "odoo development",
+        "odoo module",
+        "owl",
+        "qweb"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/subhasundardass/odoo19-snippets"
+    },
+    "homepage": "https://github.com/subhasundardass/odoo19-snippets",
+    "bugs": {
+        "url": "https://github.com/subhasundardass/odoo19-snippets/issues"
+    },
+    "license": "MIT",
+    "contributes": {
+        "snippets": [
+            {
+                "language": "python",
+                "path": "./snippets/python.code-snippets"
+            },
+            {
+                "language": "xml",
+                "path": "./snippets/xml.code-snippets"
+            },
+            {
+                "language": "csv",
+                "path": "./snippets/csv.code-snippets"
+            }
+        ]
+    },
+    "activationEvents": [],
+    "main": "",
+    "__metadata": {
+        "publisherDisplayName": "Subha Sundar Das"
+    }
+}
